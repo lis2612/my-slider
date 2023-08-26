@@ -1,8 +1,8 @@
-$slider-height: 500px;
 $slider-width: 1200px;
-$slide-size: 100px;
+$slider-height: 500px;
+$slide-size: 0;
 $scale: 3;
-$active-slide-size: $slide-size * $scale;
+$active-slide-size: 300px;
 
 .slider {
   position: relative;
@@ -46,13 +46,15 @@ $active-slide-size: $slide-size * $scale;
     font-weight: 700;
 
     scale: 1;
-    transition: translate 1s ease-in-out, width 1s ease-out, height 1s ease-out;
+    transition: top 1s ease-in-out,left 1s ease-in-out,translate 1s ease-in-out, width 1s ease-out, height 1s ease-out;
 
     &_active {
-      translate: calc($slider-width / 2 - 50%) calc($slider-height / 2 - 50%);
+      // translate: calc($slider-width / 2 - 50%) calc($slider-height / 2 - 50%);
+      left:calc($slider-width / 2 - $active-slide-size / 2);
+      top:calc($slider-height / 2 - $active-slide-size / 2);
       height: $active-slide-size;
       width: $active-slide-size;
-      transition: translate 1s ease-in-out, width 1s ease-in, height 1s ease-in;
+      transition: top 1s ease-in-out,left 1s ease-in-out,translate 1s ease-in-out, width 1s ease-out, height 1s ease-out;
       z-index: 5;
     }
   }

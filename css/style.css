@@ -137,21 +137,22 @@ legend {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  width: 100px;
-  height: 100px;
+  width: 0;
+  height: 0;
   border: 2px solid blue;
   border-radius: 50%;
   font-size: 50px;
   font-weight: 700;
   scale: 1;
-  -webkit-transition: translate 1s ease-in-out, width 1s ease-out, height 1s ease-out;
-  transition: translate 1s ease-in-out, width 1s ease-out, height 1s ease-out;
+  -webkit-transition: top 1s ease-in-out, left 1s ease-in-out, translate 1s ease-in-out, width 1s ease-out, height 1s ease-out;
+  transition: top 1s ease-in-out, left 1s ease-in-out, translate 1s ease-in-out, width 1s ease-out, height 1s ease-out;
 }
 .slider__circle_active {
-  translate: calc(600px - 50%) calc(250px - 50%);
+  left: 450px;
+  top: 100px;
   height: 300px;
   width: 300px;
-  -webkit-transition: translate 1s ease-in-out, width 1s ease-in, height 1s ease-in;
-  transition: translate 1s ease-in-out, width 1s ease-in, height 1s ease-in;
+  -webkit-transition: top 1s ease-in-out, left 1s ease-in-out, translate 1s ease-in-out, width 1s ease-out, height 1s ease-out;
+  transition: top 1s ease-in-out, left 1s ease-in-out, translate 1s ease-in-out, width 1s ease-out, height 1s ease-out;
   z-index: 5;
 }
