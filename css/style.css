@@ -107,6 +107,7 @@ legend {
   width: 1200px;
   height: 500px;
   border: 2px solid green;
+  overflow: hidden;
 }
 .slider__button {
   cursor: pointer;

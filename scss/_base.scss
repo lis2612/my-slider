@@ -10,6 +10,7 @@ $active-slide-size: $slide-size * $scale;
   width: $slider-width;
   height: $slider-height;
   border: 2px solid green;
+  overflow: hidden;
 
   &__button {
     cursor: pointer;
