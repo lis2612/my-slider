@@ -109,6 +109,7 @@ legend {
   border: 2px solid green;
 }
 .slider__button {
+  cursor: pointer;
   position: absolute;
   width: 100px;
   height: 40px;
@@ -124,6 +125,7 @@ legend {
   right: 0;
 }
 .slider__circle {
+  cursor: pointer;
   position: absolute;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -140,4 +142,15 @@ legend {
   border-radius: 50%;
   font-size: 50px;
   font-weight: 700;
+  scale: 1;
+  -webkit-transition: translate 1s ease-in-out, width 1s ease-out, height 1s ease-out;
+  transition: translate 1s ease-in-out, width 1s ease-out, height 1s ease-out;
+}
+.slider__circle_active {
+  translate: calc(600px - 50%) calc(250px - 50%);
+  height: 300px;
+  width: 300px;
+  -webkit-transition: translate 1s ease-in-out, width 1s ease-in, height 1s ease-in;
+  transition: translate 1s ease-in-out, width 1s ease-in, height 1s ease-in;
+  z-index: 5;
 }

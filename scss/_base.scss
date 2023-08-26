@@ -1,11 +1,18 @@
+$slider-height: 500px;
+$slider-width: 1200px;
+$slide-size: 100px;
+$scale: 3;
+$active-slide-size: $slide-size * $scale;
+
 .slider {
   position: relative;
   margin: 200px auto;
-  width: 1200px;
-  height: 500px;
+  width: $slider-width;
+  height: $slider-height;
   border: 2px solid green;
 
   &__button {
+    cursor: pointer;
     position: absolute;
     width: 100px;
     height: 40px;
@@ -24,16 +31,28 @@
   }
 
   &__circle {
+    cursor:pointer;
     position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100px;
-    height: 100px;
+    width: $slide-size;
+    height: $slide-size;
     border: 2px solid blue;
     border-radius: 50%;
 
     font-size: 50px;
     font-weight: 700;
+
+    scale: 1;
+    transition: translate 1s ease-in-out, width 1s ease-out, height 1s ease-out;
+
+    &_active {
+      translate: calc($slider-width / 2 - 50%) calc($slider-height / 2 - 50%);
+      height: $active-slide-size;
+      width: $active-slide-size;
+      transition: translate 1s ease-in-out, width 1s ease-in, height 1s ease-in;
+      z-index: 5;
+    }
   }
 }
