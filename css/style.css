@@ -144,15 +144,15 @@ legend {
   font-size: 50px;
   font-weight: 700;
   scale: 1;
-  -webkit-transition: top 1s ease-in-out, left 1s ease-in-out, translate 1s ease-in-out, width 1s ease-out, height 1s ease-out;
-  transition: top 1s ease-in-out, left 1s ease-in-out, translate 1s ease-in-out, width 1s ease-out, height 1s ease-out;
+  -webkit-transition: top 1s ease-in-out, left 1s ease-in-out, translate 1s ease-in-out, width 0.5s ease-out, height 0.5s ease-out;
+  transition: top 1s ease-in-out, left 1s ease-in-out, translate 1s ease-in-out, width 0.5s ease-out, height 0.5s ease-out;
 }
 .slider__circle_active {
   left: 450px;
   top: 100px;
   height: 300px;
   width: 300px;
-  -webkit-transition: top 1s ease-in-out, left 1s ease-in-out, translate 1s ease-in-out, width 1s ease-out, height 1s ease-out;
-  transition: top 1s ease-in-out, left 1s ease-in-out, translate 1s ease-in-out, width 1s ease-out, height 1s ease-out;
+  -webkit-transition: top 1s ease-in-out, left 1s ease-in-out, translate 1s ease-in-out, width 0.5s ease-out, height 0.5s ease-out;
+  transition: top 1s ease-in-out, left 1s ease-in-out, translate 1s ease-in-out, width 0.5s ease-out, height 0.5s ease-out;
   z-index: 5;
 }

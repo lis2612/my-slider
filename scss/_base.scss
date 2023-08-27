@@ -46,7 +46,7 @@ $active-slide-size: 300px;
     font-weight: 700;
 
     scale: 1;
-    transition: top 1s ease-in-out,left 1s ease-in-out,translate 1s ease-in-out, width 1s ease-out, height 1s ease-out;
+    transition: top 1s ease-in-out,left 1s ease-in-out,translate 1s ease-in-out, width 0.5s ease-out, height 0.5s ease-out;
 
     &_active {
       // translate: calc($slider-width / 2 - 50%) calc($slider-height / 2 - 50%);
@@ -54,7 +54,7 @@ $active-slide-size: 300px;
       top:calc($slider-height / 2 - $active-slide-size / 2);
       height: $active-slide-size;
       width: $active-slide-size;
-      transition: top 1s ease-in-out,left 1s ease-in-out,translate 1s ease-in-out, width 1s ease-out, height 1s ease-out;
+      transition: top 1s ease-in-out,left 1s ease-in-out,translate 1s ease-in-out, width 0.5s ease-out, height 0.5s ease-out;
       z-index: 5;
     }
   }
