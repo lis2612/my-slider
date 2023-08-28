@@ -1,10 +1,10 @@
+// Get elements from page
 const slides = document.getElementsByClassName("slider__circle");
 const slider = document.querySelector(".slider");
 const nextButton = document.getElementById("next-button");
 const prevButton = document.getElementById("prev-button");
 
-const activeSlide = document.getElementsByClassName("slider__circle_active")[0];
-
+// Get slider dimensions
 const sliderRect = {
   left: 0,
   right: slider.offsetWidth,
@@ -16,6 +16,10 @@ const sliderRect = {
   centerY: slider.offsetHeight / 2,
 };
 
+// Get active slide element
+const activeSlide = document.getElementsByClassName("slider__circle_active")[0];
+
+// Get active slide dimensions
 const activeRect = {
   left: activeSlide.offsetLeft,
   right: activeSlide.offsetLeft + activeSlide.offsetWidth,
@@ -27,6 +31,7 @@ const activeRect = {
   centerY: activeSlide.offsetTop + activeSlide.offsetHeight / 2,
 };
 
+// Clear setted styles function
 function clearStyles(el) {
   el.style.translate = "";
   el.style.height = "";
@@ -36,21 +41,34 @@ function clearStyles(el) {
   el.style.top = "";
 }
 
+// Get active slide index in slides array
 function findActiveSlideIndex(elCollection) {
   for (let i = 0; i < elCollection.length; i++) {
     if (elCollection[i].classList.contains("slider__circle_active")) return i;
   }
 }
 
+// Shake slides function
 function shakeElements(elCollection) {
+  // Get array of element sizes
   const sizesArr = scale(elCollection);
   console.clear();
   let i = 0;
   // TODO half elements to left and half to right
   for (el of elCollection) {
+    // If element is not active calculate position
     if (!el.classList.contains("slider__circle_active")) {
       let left = Math.random() * sliderRect.width;
-      if (left >= sliderRect.right - sizesArr[i]) left = sliderRect.width - sizesArr[i];
+      if (i < elCollection.length / 2) {
+        left = left - sliderRect.width / 2;
+      } else {
+        left = left + sliderRect.width / 2;
+
+      }
+
+      if (left >= sliderRect.right - sizesArr[i]) left = sliderRect.right - sizesArr[i];
+      if (left <= sliderRect.left + sizesArr[i]) left = sliderRect.left + sizesArr[i];
+
 
       let top = Math.random() * sliderRect.height;
       if (top >= sliderRect.bottom - sizesArr[i]) top = sliderRect.height - sizesArr[i];
@@ -61,11 +79,17 @@ function shakeElements(elCollection) {
         top <= activeRect.bottom &&
         top + sizesArr[i] >= activeRect.top
       ) {
-        if (activeRect.left - left + sizesArr[i] < activeRect.right - left) {
-          left = left + activeRect.right - left;
+        if (i < elCollection.length / 2) {
+          left = activeRect.left -sizesArr[i];
         } else {
-          left = left - activeRect.left - left + sizesArr[i];
+          left = activeRect.right;
         }
+
+        // if (activeRect.left - left + sizesArr[i] < activeRect.right - left) {
+        //   left = left + activeRect.right - left;
+        // } else {
+        //   left = left - activeRect.left - left + sizesArr[i];
+        // }
 
         if (activeRect.bottom - top > top + sizesArr[i] - activeRect.top) {
           top = top + activeRect.bottom - top;
@@ -77,36 +101,40 @@ function shakeElements(elCollection) {
       el.style.left = `${left}px`;
       el.style.top = `${top}px`;
     } else {
+      // If element is active clear inline styles and do nothing
       clearStyles(el);
     }
     i++;
   }
 }
 
+// Scaling slides function
+// The further the slide is from the active one, the smaller it is.
 function scale(elCollection) {
-  let centeredElementIdx = findActiveSlideIndex(elCollection);
-  let countElements = elCollection.length;
-  let baseScale = 0.7;
+  let activeSlideIndx = findActiveSlideIndex(elCollection);
+  // Multiplier for each next element's size. The size is calculated relative to the size of the active element
+  let scale = 0.8;
   let elSizes = [];
-  for (let i = 0; i < countElements; i++) {
+  for (let i = 0; i < elCollection.length; i++) {
     elSizes[i] = 1;
   }
-  for (let i = 1; i < countElements; i++) {
-    if (centeredElementIdx + i < countElements) {
-      elCollection[centeredElementIdx + i].style.height = `${activeRect.height * (baseScale - i / 10)}px`;
-      elCollection[centeredElementIdx + i].style.width = `${activeRect.width * (baseScale - i / 10)}px`;
-      elSizes[centeredElementIdx + i] = activeRect.height * (baseScale - i / 10);
+  for (let i = 1; i < elCollection.length; i++) {
+    if (activeSlideIndx + i < elCollection.length) {
+      elCollection[activeSlideIndx + i].style.height = `${activeRect.height * (scale - i / 10)}px`;
+      elCollection[activeSlideIndx + i].style.width = `${activeRect.width * (scale - i / 10)}px`;
+      elSizes[activeSlideIndx + i] = activeRect.height * (scale - i / 10);
     }
 
-    if (centeredElementIdx - i >= 0) {
-      elCollection[centeredElementIdx - i].style.height = `${activeRect.height * (baseScale - i / 10)}px`;
-      elCollection[centeredElementIdx - i].style.width = `${activeRect.width * (baseScale - i / 10)}px`;
-      elSizes[centeredElementIdx - i] = activeRect.height * (baseScale - i / 10);
+    if (activeSlideIndx - i >= 0) {
+      elCollection[activeSlideIndx - i].style.height = `${activeRect.height * (scale - i / 10)}px`;
+      elCollection[activeSlideIndx - i].style.width = `${activeRect.width * (scale - i / 10)}px`;
+      elSizes[activeSlideIndx - i] = activeRect.height * (scale - i / 10);
     }
   }
   return elSizes;
 }
 
+// Set next slide to active
 function nextSlide(elCollection) {
   let centeredElementIdx = findActiveSlideIndex(elCollection);
   elCollection[centeredElementIdx].classList.remove("slider__circle_active");
@@ -116,6 +144,7 @@ function nextSlide(elCollection) {
   shakeElements(slides);
 }
 
+// Set previous slide to active
 function prevSlide(elCollection) {
   let centeredElementIdx = findActiveSlideIndex(elCollection);
   elCollection[centeredElementIdx].classList.remove("slider__circle_active");
@@ -125,6 +154,7 @@ function prevSlide(elCollection) {
   shakeElements(slides);
 }
 
+// Set clicked slide to active
 function clickSlide(el, elCollection) {
   let centeredElementIdx = findActiveSlideIndex(elCollection);
   elCollection[centeredElementIdx].classList.remove("slider__circle_active");
@@ -133,8 +163,8 @@ function clickSlide(el, elCollection) {
 }
 
 shakeElements(slides);
-scale(slides);
 
+// Listener for button and slides
 nextButton.addEventListener("click", () => nextSlide(slides));
 prevButton.addEventListener("click", () => prevSlide(slides));
 
