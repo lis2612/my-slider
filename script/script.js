@@ -5,29 +5,27 @@ const prevButton = document.getElementById("prev-button");
 
 const activeSlide = document.getElementsByClassName("slider__circle_active")[0];
 
-let sliderX = slider.offsetLeft;
-let sliderY = slider.offsetTop;
-let sliderHeight = slider.offsetHeight;
-let sliderWidth = slider.offsetWidth;
-
-// const activeSlideX = activeSlide.clientLeft;
-// const activeSlideY = activeSlide.clientTop;
-
-const activeSlideX = 450;
-const activeSlideY = 100;
-const activeSlideH = activeSlide.offsetHeight;
-const activeSlideW = activeSlide.offsetWidth;
+const sliderRect = {
+  left: 0,
+  right: slider.offsetWidth,
+  top: 0,
+  bottom: slider.offsetHeight,
+  width: slider.offsetWidth,
+  height: slider.offsetHeight,
+  centerX: slider.offsetWidth / 2,
+  centerY: slider.offsetHeight / 2,
+};
 
 const activeRect = {
-  left: 450,
-  right: 450 + activeSlide.clientWidth,
-  top: 100,
-  bottom: 100 + activeSlide.clientHeight,
-  centerX: 450 + activeSlide.clientWidth / 2,
-  centerY: 100 + activeSlide.clientHeight / 2,
+  left: activeSlide.offsetLeft,
+  right: activeSlide.offsetLeft + activeSlide.offsetWidth,
+  top: activeSlide.offsetTop,
+  bottom: activeSlide.offsetTop + activeSlide.clientHeight,
+  width: activeSlide.offsetWidth,
+  height: activeSlide.offsetHeight,
+  centerX: activeSlide.offsetLeft + activeSlide.offsetWidth / 2,
+  centerY: activeSlide.offsetTop + activeSlide.offsetHeight / 2,
 };
-// let curH = 100;
-// let curH = 100;
 
 function clearStyles(el) {
   el.style.translate = "";
@@ -45,16 +43,6 @@ function findActiveSlideIndex(elCollection) {
 }
 
 function getElRect(el) {
-  // return {
-  //   left: el.getBoundingClientRect().left,
-  //   right: el.getBoundingClientRect().left + el.getBoundingClientRect().width,
-  //   top: el.getBoundingClientRect().top,
-  //   bottom: el.getBoundingClientRect().top + el.getBoundingClientRect().height,
-  //   width: el.getBoundingClientRect().width,
-  //   height: el.getBoundingClientRect().height,
-  //   centerX: el.getBoundingClientRect().left + el.getBoundingClientRect().width / 2,
-  //   centerY: el.getBoundingClientRect().top + el.getBoundingClientRect().height / 2,
-  // };
   return {
     left: el.offsetLeft,
     right: el.offsetLeft + el.offsetWidth,
@@ -68,27 +56,50 @@ function getElRect(el) {
 }
 
 function shakeElements(elCollection) {
-  scale(elCollection);
+  const sizesArr = scale(elCollection);
   console.clear();
+  let i = 0;
+  // TODO half elements to left and half to right
   for (el of elCollection) {
     if (!el.classList.contains("slider__circle_active")) {
-      let cX = Math.random() * sliderWidth;
-      // let cX=-100
-      if (cX - getElRect(el).width <= 0) cX = getElRect(el).width;
-      if (cX + getElRect(el).width >= sliderWidth) cX = sliderWidth;
+      let left = Math.random() * sliderRect.width;
+      if (left >= sliderRect.right - sizesArr[i]) left = sliderRect.width - sizesArr[i];
 
+      let top = Math.random() * sliderRect.height;
+      if (top >= sliderRect.bottom - sizesArr[i]) top = sliderRect.height - sizesArr[i];
 
-      let cY = Math.random() * sliderHeight;
-      // let cY = -100;
-      if (cY - getElRect(el).height <= 0) cY = getElRect(el).height;
-      if (cY + getElRect(el).height >=sliderHeight) cY = sliderHeight;
+      if (
+        left <= activeRect.right &&
+        left + sizesArr[i] >= activeRect.left &&
+        top <= activeRect.bottom &&
+        top + sizesArr[i] >= activeRect.top
+      ) {
+        if (activeRect.left - left + sizesArr[i] < activeRect.right - left) {
+          left = left + activeRect.right - left;
+        } else {
+          left = left - activeRect.left - left + sizesArr[i];
+        }
 
+        if (activeRect.bottom - top > top + sizesArr[i] - activeRect.top) {
+          top = top + activeRect.bottom - top;
+        } else {
+          top = top - top + sizesArr[i] - activeRect.top;
+        }
+      }
 
-      el.style.left = `${cX - getElRect(el).width}px`;
-      el.style.top = `${cY - getElRect(el).height}px`;
+      // if (cX >= activeRect.left && cX <= activeRect.right && cY >= activeRect.top && cY <= activeRect.bottom) {
+      //   console.log("in target ", el.outerText,cX,cY);
+      //   console.log(activeRect.left,activeRect.right,' : ',activeRect.top,activeRect.bottom);
+      // }
+
+      // el.style.left = `${cX - getElRect(el).width}px`;
+      // el.style.top = `${cY - getElRect(el).height}px`;
+      el.style.left = `${left}px`;
+      el.style.top = `${top}px`;
     } else {
       clearStyles(el);
     }
+    i++;
   }
 }
 
@@ -96,17 +107,24 @@ function scale(elCollection) {
   let centeredElementIdx = findActiveSlideIndex(elCollection);
   let countElements = elCollection.length;
   let baseScale = 0.7;
+  let elSizes = [];
+  for (let i = 0; i < countElements; i++) {
+    elSizes[i] = 1;
+  }
   for (let i = 1; i < countElements; i++) {
     if (centeredElementIdx + i < countElements) {
-      elCollection[centeredElementIdx + i].style.height = `${activeSlideH * (baseScale - i / 10)}px`;
-      elCollection[centeredElementIdx + i].style.width = `${activeSlideW * (baseScale - i / 10)}px`;
+      elCollection[centeredElementIdx + i].style.height = `${activeRect.height * (baseScale - i / 10)}px`;
+      elCollection[centeredElementIdx + i].style.width = `${activeRect.width * (baseScale - i / 10)}px`;
+      elSizes[centeredElementIdx + i] = activeRect.height * (baseScale - i / 10);
     }
 
     if (centeredElementIdx - i >= 0) {
-      elCollection[centeredElementIdx - i].style.height = `${activeSlideH * (baseScale - i / 10)}px`;
-      elCollection[centeredElementIdx - i].style.width = `${activeSlideW * (baseScale - i / 10)}px`;
+      elCollection[centeredElementIdx - i].style.height = `${activeRect.height * (baseScale - i / 10)}px`;
+      elCollection[centeredElementIdx - i].style.width = `${activeRect.width * (baseScale - i / 10)}px`;
+      elSizes[centeredElementIdx - i] = activeRect.height * (baseScale - i / 10);
     }
   }
+  return elSizes;
 }
 
 function nextSlide(elCollection) {
