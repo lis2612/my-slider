@@ -42,19 +42,6 @@ function findActiveSlideIndex(elCollection) {
   }
 }
 
-function getElRect(el) {
-  return {
-    left: el.offsetLeft,
-    right: el.offsetLeft + el.offsetWidth,
-    top: el.offsetTop,
-    bottom: el.offsetTop + el.offsetHeight,
-    width: el.offsetWidth,
-    height: el.offsetHeight,
-    centerX: el.offsetLeft + el.offsetWidth / 2,
-    centerY: el.offsetTop + el.offsetHeight / 2,
-  };
-}
-
 function shakeElements(elCollection) {
   const sizesArr = scale(elCollection);
   console.clear();
@@ -87,13 +74,6 @@ function shakeElements(elCollection) {
         }
       }
 
-      // if (cX >= activeRect.left && cX <= activeRect.right && cY >= activeRect.top && cY <= activeRect.bottom) {
-      //   console.log("in target ", el.outerText,cX,cY);
-      //   console.log(activeRect.left,activeRect.right,' : ',activeRect.top,activeRect.bottom);
-      // }
-
-      // el.style.left = `${cX - getElRect(el).width}px`;
-      // el.style.top = `${cY - getElRect(el).height}px`;
       el.style.left = `${left}px`;
       el.style.top = `${top}px`;
     } else {
